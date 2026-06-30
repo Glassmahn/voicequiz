@@ -30,6 +30,7 @@ export default function PlayerGamePage() {
   const [phase, setPhase] = useState<'showing' | 'answering' | 'answered'>('showing')
   const [answerStates, setAnswerStates] = useState<AnswerState[]>(['default', 'default', 'default', 'default'])
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+  const [gameEnded, setGameEnded] = useState(false)
   const startTimeRef = useRef<number>(0)
 
   const currentQuestion = allQuestions[localIndex]
@@ -49,6 +50,7 @@ export default function PlayerGamePage() {
     })
 
     channel.on('broadcast', { event: 'game:end' }, () => {
+      setGameEnded(true)
       router.push(`/play/${roomCode}/results`)
     })
 
@@ -218,25 +220,36 @@ export default function PlayerGamePage() {
 
               {phase === 'answered' && (
                 <button
-                  onClick={handleNext}
+                  onClick={localIndex < allQuestions.length - 1 ? handleNext : undefined}
+                  disabled={localIndex >= allQuestions.length - 1 && !gameEnded}
                   style={{
                     fontFamily: "'SF Pro Text', sans-serif",
                     fontWeight: 600,
                     padding: '12px 40px',
                     borderRadius: 10,
                     border: 'none',
-                    cursor: 'pointer',
-                    color: '#fff',
+                    cursor: localIndex >= allQuestions.length - 1 && !gameEnded ? 'default' : 'pointer',
+                    color: localIndex >= allQuestions.length - 1 && !gameEnded ? 'rgba(240,238,248,0.2)' : '#fff',
                     fontSize: '0.85rem',
                     marginTop: 12,
-                    background: 'linear-gradient(135deg, #FF2D9B, #7B4FFF)',
+                    background: localIndex >= allQuestions.length - 1 && !gameEnded
+                      ? 'rgba(255,255,255,0.05)'
+                      : 'linear-gradient(135deg, #FF2D9B, #7B4FFF)',
                     transition: 'transform 0.15s, box-shadow 0.15s',
                     animation: 'fadeIn 0.3s ease both',
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(255,45,155,0.3)' }}
-                  onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none' }}
+                  onMouseEnter={(e) => {
+                    if (localIndex < allQuestions.length - 1 || gameEnded) {
+                      e.currentTarget.style.transform = 'translateY(-1px)'
+                      e.currentTarget.style.boxShadow = '0 8px 24px rgba(255,45,155,0.3)'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'none'
+                    e.currentTarget.style.boxShadow = 'none'
+                  }}
                 >
-                  {localIndex < allQuestions.length - 1 ? 'Next Question' : 'See Results'}
+                  {localIndex < allQuestions.length - 1 ? 'Next Question' : gameEnded ? 'See Results' : 'Waiting for host...'}
                 </button>
               )}
             </div>
