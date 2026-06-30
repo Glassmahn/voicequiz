@@ -146,15 +146,15 @@ export default function JoinPage() {
   }
 
   return (
-    <div style={{
+    <div className="join-page" style={{
       minHeight: '100vh', background: 'var(--bg)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       padding: 24,
     }}>
-      <div style={{ width: '100%', maxWidth: 360 }}>
+      <div className="join-card" style={{ width: '100%', maxWidth: 360 }}>
         <h1 style={{
           fontFamily: "'SF Pro Display', -apple-system, sans-serif",
-          fontSize: '1.5rem',
+          fontSize: 'clamp(1.2rem, 5vw, 1.5rem)',
           fontWeight: 700,
           color: '#F0EEF8',
           textAlign: 'center',
@@ -190,16 +190,23 @@ export default function JoinPage() {
               letterSpacing: '0.12em',
               textAlign: 'center',
               textTransform: 'uppercase',
-              fontSize: '1.1rem',
+              fontSize: 'clamp(1rem, 4vw, 1.1rem)',
             }}
             onKeyDown={(e) => e.key === 'Enter' && handleJoin()}
           />
 
-          <Button onClick={handleJoin} loading={loading}>
+          <Button onClick={handleJoin} loading={loading} style={{ minHeight: 48 }}>
             Join Room
           </Button>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 480px) {
+          .join-page { padding: 16px !important; }
+          .join-card { max-width: 100% !important; }
+        }
+      `}</style>
 
       {error && (
         <Toast

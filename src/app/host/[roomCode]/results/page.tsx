@@ -78,8 +78,8 @@ export default function HostResultsPage() {
   const sorted = [...players].sort((a, b) => b.score - a.score)
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)', padding: 32 }}>
-      <div style={{ maxWidth: 500, margin: '0 auto', textAlign: 'center', animation: 'fadeUp 0.5s ease both' }}>
+    <div className="host-results" style={{ minHeight: '100vh', background: 'var(--bg)', padding: 32 }}>
+      <div className="results-content" style={{ maxWidth: 500, margin: '0 auto', textAlign: 'center', animation: 'fadeUp 0.5s ease both' }}>
         <h1 style={{
           fontFamily: "'SF Pro Display', -apple-system, sans-serif",
           fontSize: 'clamp(2rem, 5vw, 2.5rem)',
@@ -90,18 +90,17 @@ export default function HostResultsPage() {
           Game over
         </h1>
 
-        <p style={{ color: 'rgba(240,238,248,0.3)', marginBottom: 32, fontSize: '0.85rem' }}>
+        <p style={{ color: 'rgba(240,238,248,0.3)', marginBottom: 32, fontSize: 'clamp(0.8rem, 3vw, 0.85rem)' }}>
           {room?.title}
         </p>
 
         <div style={{ marginBottom: 32 }}>
-          {/* Winner */}
           {sorted[0] && (
             <div style={{
               background: 'linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,215,0,0.02))',
               border: '1px solid rgba(255,215,0,0.2)',
               borderRadius: 16,
-              padding: 32,
+              padding: 'clamp(24px, 5vw, 32px)',
               marginBottom: 20,
               position: 'relative',
               overflow: 'hidden',
@@ -115,12 +114,12 @@ export default function HostResultsPage() {
                 &#127942;
               </div>
               <Avatar avatarKey={sorted[0].avatar} size={64} />
-              <div style={{ fontSize: '1.1rem', fontWeight: 600, color: '#F0EEF8', marginTop: 12, marginBottom: 2 }}>
+              <div style={{ fontSize: 'clamp(1rem, 4vw, 1.1rem)', fontWeight: 600, color: '#F0EEF8', marginTop: 12, marginBottom: 2 }}>
                 {sorted[0].display_name}
               </div>
               <div style={{
                 fontFamily: "var(--font-jetbrains), monospace",
-                fontSize: '2rem',
+                fontSize: 'clamp(1.5rem, 6vw, 2rem)',
                 color: '#FFD700',
                 fontWeight: 600,
               }}>
@@ -139,7 +138,6 @@ export default function HostResultsPage() {
             </div>
           )}
 
-          {/* Rest of leaderboard */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {sorted.slice(1).map((p, i) => {
               const rank = i + 2
@@ -164,13 +162,14 @@ export default function HostResultsPage() {
                     {rank}
                   </span>
                   <Avatar avatarKey={p.avatar} size={28} />
-                  <span style={{ color: '#F0EEF8', fontWeight: 500, flex: 1, textAlign: 'left' }}>
+                  <span style={{ color: '#F0EEF8', fontWeight: 500, flex: 1, textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {p.display_name}
                   </span>
                   <span style={{
                     fontFamily: "var(--font-jetbrains), monospace",
                     fontSize: '0.85rem',
                     color: 'rgba(240,238,248,0.35)',
+                    flexShrink: 0,
                   }}>
                     {p.score.toLocaleString()}
                   </span>
@@ -180,11 +179,20 @@ export default function HostResultsPage() {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div className="results-actions" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
           <Button onClick={handlePlayAgain}>Host Another Quiz</Button>
           <Button variant="secondary" onClick={handleHome}>Home</Button>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 480px) {
+          .host-results { padding: 20px 16px !important; }
+          .results-content { max-width: 100% !important; }
+          .results-actions { flex-direction: column; align-items: center; }
+          .results-actions button { width: 100%; max-width: 280px; }
+        }
+      `}</style>
     </div>
   )
 }

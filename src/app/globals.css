@@ -137,3 +137,17 @@ body::after {
     transition: none !important;
   }
 }
+
+@media (max-width: 768px) {
+  html { font-size: 15px; }
+  h1 { word-break: break-word; }
+}
+
+@media (max-width: 480px) {
+  html { font-size: 14px; }
+  body { padding: 0; }
+}
+
+@media (max-width: 360px) {
+  html { font-size: 13px; }
+}

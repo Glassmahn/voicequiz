@@ -341,7 +341,13 @@ export default function HostGamePage() {
 
       <style>{`
         @media (max-width: 700px) {
-          .game { grid-template-columns: 1fr; }
+          .game { grid-template-columns: 1fr; padding: 16px !important; gap: 16px !important; }
+          nav { padding: 10px 12px !important; }
+        }
+        @media (max-width: 480px) {
+          nav { flex-direction: column; gap: 8px; padding: 10px 12px !important; }
+          nav > div:last-child { flex-wrap: wrap; justify-content: center; }
+          .game { padding: 12px !important; }
         }
       `}</style>
     </div>

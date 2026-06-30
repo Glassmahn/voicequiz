@@ -106,8 +106,8 @@ export default function HostLobbyPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)', padding: 32 }}>
-      <div style={{ maxWidth: 500, margin: '0 auto', textAlign: 'center', animation: 'fadeUp 0.5s ease both' }}>
+    <div className="host-lobby" style={{ minHeight: '100vh', background: 'var(--bg)', padding: 32 }}>
+      <div className="lobby-content" style={{ maxWidth: 500, margin: '0 auto', textAlign: 'center', animation: 'fadeUp 0.5s ease both' }}>
         <div style={{ marginBottom: 24 }}>
           <RoomCodeDisplay code={roomCode} />
         </div>
@@ -118,18 +118,19 @@ export default function HostLobbyPage() {
           fontWeight: 700,
           color: '#F0EEF8',
           marginBottom: 4,
+          padding: '0 16px',
         }}>
           {room?.title || 'Quiz'}
         </h1>
 
         <p style={{
           color: 'rgba(240,238,248,0.3)',
-          fontSize: '0.8rem',
+          fontSize: 'clamp(0.7rem, 2.5vw, 0.8rem)',
           marginBottom: 32,
           fontFamily: "var(--font-jetbrains), monospace",
           letterSpacing: '0.02em',
         }}>
-          {room?.question_count} questions &middot; {room?.timer_seconds}s &middot; {room?.difficulty}
+          {room?.question_count} questions &middot; {room?.timer_seconds}s
         </p>
 
         <div style={{ marginBottom: 32 }}>
@@ -143,7 +144,7 @@ export default function HostLobbyPage() {
           }}>
             Players ({players.length})
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxWidth: 360, margin: '0 auto' }}>
+          <div className="player-list" style={{ display: 'flex', flexDirection: 'column', gap: 8, maxWidth: 360, margin: '0 auto' }}>
             {players.map((p, i) => (
               <div key={p.player_id} style={{
                 display: 'flex', alignItems: 'center', gap: 10,
@@ -155,7 +156,7 @@ export default function HostLobbyPage() {
                 animation: `fadeIn 0.3s ease both ${i * 0.05}s`,
               }}>
                 <Avatar avatarKey={p.avatar} size={28} />
-                <span style={{ color: '#F0EEF8', fontWeight: 500, flex: 1, textAlign: 'left' }}>
+                <span style={{ color: '#F0EEF8', fontWeight: 500, flex: 1, textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {p.display_name}
                 </span>
                 {p.is_host && (
@@ -163,7 +164,7 @@ export default function HostLobbyPage() {
                     fontSize: '0.55rem', padding: '2px 8px', borderRadius: 4,
                     background: 'rgba(123,79,255,0.15)', color: '#7B4FFF',
                     fontFamily: "var(--font-jetbrains), monospace", letterSpacing: '0.05em',
-                    textTransform: 'uppercase',
+                    textTransform: 'uppercase', flexShrink: 0,
                   }}>
                     Host
                   </span>
@@ -182,11 +183,19 @@ export default function HostLobbyPage() {
           size="lg"
           onClick={handleStart}
           disabled={players.length < 1}
-          style={{ minWidth: 200 }}
+          style={{ minWidth: 200, width: '100%', maxWidth: 300 }}
         >
           Start Game
         </Button>
       </div>
+
+      <style>{`
+        @media (max-width: 480px) {
+          .host-lobby { padding: 20px 16px !important; }
+          .lobby-content { max-width: 100% !important; }
+          .player-list { max-width: 100% !important; }
+        }
+      `}</style>
     </div>
   )
 }

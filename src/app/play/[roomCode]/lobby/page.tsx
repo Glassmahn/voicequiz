@@ -89,11 +89,11 @@ export default function PlayerLobbyPage() {
   }
 
   return (
-    <div style={{
+    <div className="player-lobby" style={{
       minHeight: '100vh', background: 'var(--bg)',
       display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24,
     }}>
-      <div style={{ textAlign: 'center', animation: 'fadeUp 0.5s ease both' }}>
+      <div className="lobby-inner" style={{ textAlign: 'center', animation: 'fadeUp 0.5s ease both' }}>
         <RoomCodeDisplay code={roomCode} />
 
         <h1 style={{
@@ -103,14 +103,15 @@ export default function PlayerLobbyPage() {
           color: '#F0EEF8',
           marginTop: 16,
           marginBottom: 8,
+          padding: '0 16px',
         }}>
           {roomTitle}
         </h1>
 
         {metadata && (
-          <div style={{
-            display: 'flex', gap: 16, justifyContent: 'center',
-            marginBottom: 28, fontSize: '0.75rem',
+          <div className="metadata-bar" style={{
+            display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap',
+            marginBottom: 28, fontSize: 'clamp(0.7rem, 2.5vw, 0.75rem)',
             color: 'rgba(240,238,248,0.25)',
             fontFamily: "var(--font-jetbrains), monospace",
             letterSpacing: '0.03em',
@@ -118,27 +119,25 @@ export default function PlayerLobbyPage() {
             <span>{metadata.qCount} questions</span>
             <span>&middot;</span>
             <span>{metadata.timer}s timer</span>
-            <span>&middot;</span>
-            <span style={{ textTransform: 'capitalize' }}>{metadata.difficulty}</span>
           </div>
         )}
 
-        <div style={{
+        <div className="count-card" style={{
           background: 'rgba(255,255,255,0.02)',
           border: '1px solid rgba(255,255,255,0.06)',
           borderRadius: 16,
-          padding: '28px 40px',
+          padding: 'clamp(24px, 6vw, 40px)',
           animation: 'scaleIn 0.4s ease both 0.15s',
         }}>
           <div style={{
             fontFamily: "var(--font-jetbrains), monospace",
-            fontSize: '2.5rem',
+            fontSize: 'clamp(2rem, 8vw, 2.5rem)',
             color: '#F0EEF8',
             fontWeight: 500,
           }}>
             {playerCount}
           </div>
-          <div style={{ color: 'rgba(240,238,248,0.3)', fontSize: '0.85rem', marginTop: 4 }}>
+          <div style={{ color: 'rgba(240,238,248,0.3)', fontSize: 'clamp(0.8rem, 3vw, 0.85rem)', marginTop: 4 }}>
             player{playerCount !== 1 ? 's' : ''} in room
           </div>
         </div>
@@ -146,12 +145,21 @@ export default function PlayerLobbyPage() {
         <div style={{
           marginTop: 32,
           color: 'rgba(240,238,248,0.2)',
-          fontSize: '0.82rem',
+          fontSize: 'clamp(0.78rem, 3vw, 0.82rem)',
           animation: 'pulse 2s ease-in-out infinite',
+          padding: '0 16px',
         }}>
           Waiting for host to start the game...
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 480px) {
+          .player-lobby { padding: 16px !important; }
+          .lobby-inner { width: 100%; }
+          .metadata-bar { gap: 4px !important; }
+        }
+      `}</style>
     </div>
   )
 }

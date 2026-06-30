@@ -115,8 +115,8 @@ export default function PlayerResultsPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)', padding: 32 }}>
-      <div style={{ maxWidth: 500, margin: '0 auto', textAlign: 'center', animation: 'fadeUp 0.5s ease both' }}>
+    <div className="player-results" style={{ minHeight: '100vh', background: 'var(--bg)', padding: 32 }}>
+      <div className="results-content" style={{ maxWidth: 500, margin: '0 auto', textAlign: 'center', animation: 'fadeUp 0.5s ease both' }}>
         <h1 style={{
           fontFamily: "'SF Pro Display', -apple-system, sans-serif",
           fontSize: 'clamp(2rem, 5vw, 2.5rem)',
@@ -127,12 +127,11 @@ export default function PlayerResultsPage() {
           Game over
         </h1>
 
-        <p style={{ color: 'rgba(240,238,248,0.3)', marginBottom: 32, fontSize: '0.85rem' }}>
+        <p style={{ color: 'rgba(240,238,248,0.3)', marginBottom: 32, fontSize: 'clamp(0.8rem, 3vw, 0.85rem)' }}>
           {roomTitle}
         </p>
 
-        {/* Score card for html2canvas */}
-        <div ref={scoreCardRef} style={{
+        <div ref={scoreCardRef} className="score-card" style={{
           background: myRank === 1
             ? 'linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,215,0,0.02))'
             : 'rgba(255,255,255,0.02)',
@@ -140,7 +139,7 @@ export default function PlayerResultsPage() {
             ? '1px solid rgba(255,215,0,0.2)'
             : '1px solid rgba(255,255,255,0.06)',
           borderRadius: 16,
-          padding: 32,
+          padding: 'clamp(24px, 5vw, 32px)',
           marginBottom: 24,
           position: 'relative',
           overflow: 'hidden',
@@ -156,12 +155,12 @@ export default function PlayerResultsPage() {
             </div>
           )}
           <Avatar avatarKey={me?.avatar || 'a0'} size={56} />
-          <div style={{ fontSize: '1.1rem', fontWeight: 600, color: '#F0EEF8', marginTop: 12, marginBottom: 4 }}>
+          <div style={{ fontSize: 'clamp(1rem, 4vw, 1.1rem)', fontWeight: 600, color: '#F0EEF8', marginTop: 12, marginBottom: 4 }}>
             {me?.display_name || 'You'}
           </div>
           <div style={{
             fontFamily: "var(--font-jetbrains), monospace",
-            fontSize: '2.5rem',
+            fontSize: 'clamp(2rem, 8vw, 2.5rem)',
             color: myRank === 1 ? '#FFD700' : 'rgba(240,238,248,0.6)',
             fontWeight: 600,
             marginTop: 8,
@@ -178,8 +177,7 @@ export default function PlayerResultsPage() {
           </div>
         </div>
 
-        {/* Full leaderboard */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 32 }}>
+        <div className="leaderboard-list" style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 32 }}>
           {sorted.map((p, i) => {
             const isMedal = i < 3
             const isMe = p.player_id === playerId
@@ -212,6 +210,9 @@ export default function PlayerResultsPage() {
                   fontWeight: isMe ? 600 : 500,
                   flex: 1,
                   textAlign: 'left',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
                 }}>
                   {p.display_name}
                 </span>
@@ -222,14 +223,16 @@ export default function PlayerResultsPage() {
                     fontFamily: "var(--font-jetbrains), monospace",
                     letterSpacing: '0.05em',
                     textTransform: 'uppercase',
+                    flexShrink: 0,
                   }}>
                     You
                   </span>
                 )}
                 <span style={{
                   fontFamily: "var(--font-jetbrains), monospace",
-                  fontSize: '0.85rem',
+                  fontSize: 'clamp(0.8rem, 3vw, 0.85rem)',
                   color: 'rgba(240,238,248,0.35)',
+                  flexShrink: 0,
                 }}>
                   {p.score.toLocaleString()}
                 </span>
@@ -238,7 +241,7 @@ export default function PlayerResultsPage() {
           })}
         </div>
 
-        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div className="results-actions" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
           <Button onClick={handleShareImage}>
             Share Score as Image
           </Button>
@@ -247,7 +250,7 @@ export default function PlayerResultsPage() {
           </Button>
         </div>
 
-        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 12 }}>
+        <div className="results-actions" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 12 }}>
           <Button
             variant="ghost"
             onClick={() => router.push('/join')}
@@ -259,6 +262,15 @@ export default function PlayerResultsPage() {
           </Button>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 480px) {
+          .player-results { padding: 20px 16px !important; }
+          .results-content { max-width: 100% !important; }
+          .results-actions { flex-direction: column; align-items: center; }
+          .results-actions button { width: 100%; max-width: 280px; }
+        }
+      `}</style>
     </div>
   )
 }

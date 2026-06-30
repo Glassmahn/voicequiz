@@ -113,7 +113,10 @@ export default function LandingPage() {
             50% { filter: drop-shadow(0 0 55px rgba(255,45,155,1)) drop-shadow(0 0 120px rgba(123,79,255,0.7)) drop-shadow(0 0 200px rgba(110,198,255,0.4)); }
           }
           @media (max-width: 480px) {
-            h1 { font-size: 5rem !important; }
+            h1 { font-size: 3.5rem !important; }
+          }
+          @media (max-width: 360px) {
+            h1 { font-size: 2.8rem !important; }
           }
           @media (prefers-reduced-motion: reduce) {
             @keyframes glow { 0%, 100% { filter: none; } 50% { filter: none; } }
@@ -136,13 +139,12 @@ export default function LandingPage() {
         justifyContent: 'center',
       }}
     >
-      {/* Vignette */}
       <div style={{
         position: 'fixed', inset: 0, zIndex: 1, pointerEvents: 'none',
         background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%)',
       }} />
 
-      <div style={{
+      <div className="setup-panel" style={{
         position: 'relative', zIndex: 10,
         width: '100%', maxWidth: 420, padding: 24,
         animation: 'fadeUp 0.6s ease both',
@@ -333,6 +335,17 @@ export default function LandingPage() {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 480px) {
+          .setup-panel { padding: 16px !important; }
+          .setup-panel > div { padding: 24px 16px !important; border-radius: 16px !important; }
+        }
+        @media (max-width: 360px) {
+          .setup-panel { padding: 12px !important; }
+          .setup-panel > div { padding: 20px 12px !important; }
+        }
+      `}</style>
     </div>
   )
 }
