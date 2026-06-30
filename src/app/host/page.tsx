@@ -46,8 +46,10 @@ export default function HostSetupPage() {
       const next = prev.map((q, i) => {
         if (i !== qi) return q
         const newOptions = [...q.options]
+        const oldValue = newOptions[oi]
         newOptions[oi] = value
-        return { ...q, options: newOptions }
+        const newCorrectAnswer = q.correctAnswer === oldValue ? value : q.correctAnswer
+        return { ...q, options: newOptions, correctAnswer: newCorrectAnswer }
       })
       return next
     })

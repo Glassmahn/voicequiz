@@ -14,7 +14,6 @@
     "canvas-confetti": "^1.9.4",
     "html2canvas": "^1.4.1",
     "next": "^16.2.9",
-    "openai": "^6.45.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "zustand": "^5.0.14"
