@@ -48,7 +48,7 @@ export default function HostSetupPage() {
         const newOptions = [...q.options]
         const oldValue = newOptions[oi]
         newOptions[oi] = value
-        const newCorrectAnswer = q.correctAnswer === oldValue ? value : q.correctAnswer
+        const newCorrectAnswer = q.correctAnswer === oldValue ? value.trim() : q.correctAnswer
         return { ...q, options: newOptions, correctAnswer: newCorrectAnswer }
       })
       return next
@@ -56,7 +56,7 @@ export default function HostSetupPage() {
   }
 
   const setCorrect = (qi: number, value: string) => {
-    updateQuestion(qi, 'correctAnswer', value)
+    updateQuestion(qi, 'correctAnswer', value.trim())
   }
 
   const addQuestion = () => {
@@ -164,7 +164,7 @@ export default function HostSetupPage() {
       question_number: i + 1,
       question_text: q.question.trim(),
       options: q.options.map((o) => o.trim()),
-      correct_answer: q.correctAnswer,
+      correct_answer: q.correctAnswer.trim(),
     }))
 
     const { data: insertedQuestions, error: qErr } = await getSupabase()
