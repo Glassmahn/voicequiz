@@ -19,6 +19,7 @@ export default function HostResultsPage() {
   const { playerId } = usePlayerStore()
   const { room, players, setPlayers, reset } = useGameStore()
   const [loading, setLoading] = useState(true)
+  const [questionCount, setQuestionCount] = useState(0)
 
   useEffect(() => {
     if (!playerId || !roomCode) return
@@ -34,6 +35,8 @@ export default function HostResultsPage() {
         router.push('/')
         return
       }
+
+      setQuestionCount(roomData.question_count)
 
       const { data: playersData } = await getSupabase()
         .from('players')
@@ -123,7 +126,7 @@ export default function HostResultsPage() {
                 color: '#FFD700',
                 fontWeight: 600,
               }}>
-                {sorted[0].score.toLocaleString()}
+                {Math.round((sorted[0].score / (questionCount * 10)) * 100)}%
               </div>
               <div style={{
                 color: 'rgba(255,215,0,0.4)',
@@ -171,7 +174,7 @@ export default function HostResultsPage() {
                     color: 'rgba(240,238,248,0.35)',
                     flexShrink: 0,
                   }}>
-                    {p.score.toLocaleString()}
+                    {Math.round((p.score / (questionCount * 10)) * 100)}%
                   </span>
                 </div>
               )

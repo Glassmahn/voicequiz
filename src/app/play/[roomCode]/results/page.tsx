@@ -28,6 +28,7 @@ export default function PlayerResultsPage() {
   const [roomTitle, setRoomTitle] = useState('')
   const [loading, setLoading] = useState(true)
   const [copied, setCopied] = useState(false)
+  const [questionCount, setQuestionCount] = useState(0)
   const scoreCardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -46,6 +47,7 @@ export default function PlayerResultsPage() {
       }
 
       setRoomTitle(room.title)
+      setQuestionCount(room.question_count)
 
       const { data: playersData } = await getSupabase()
         .from('players')
@@ -96,7 +98,7 @@ export default function PlayerResultsPage() {
       `Room: ${roomCode}`,
       '',
       ...sorted.map((p, i) =>
-        `${i + 1}. ${p.display_name} \u2014 ${p.score.toLocaleString()}${p.player_id === playerId ? ' (You)' : ''}`
+        `${i + 1}. ${p.display_name} \u2014 ${Math.round((p.score / (questionCount * 10)) * 100)}%${p.player_id === playerId ? ' (You)' : ''}`
       ),
     ].join('\n')
 
@@ -165,7 +167,7 @@ export default function PlayerResultsPage() {
             fontWeight: 600,
             marginTop: 8,
           }}>
-            {me?.score.toLocaleString() || 0}
+            {questionCount > 0 ? `${Math.round(((me?.score || 0) / (questionCount * 10)) * 100)}%` : '0%'}
           </div>
           <div style={{
             color: myRank === 1 ? 'rgba(255,215,0,0.4)' : 'rgba(240,238,248,0.2)',
@@ -234,7 +236,7 @@ export default function PlayerResultsPage() {
                   color: 'rgba(240,238,248,0.35)',
                   flexShrink: 0,
                 }}>
-                  {p.score.toLocaleString()}
+                  {Math.round((p.score / (questionCount * 10)) * 100)}%
                 </span>
               </div>
             )
